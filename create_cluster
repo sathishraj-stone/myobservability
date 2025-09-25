@@ -1,0 +1,21 @@
+# create network (optional)
+k3d network create k3d-observability-net || true
+
+# management
+k3d cluster create management \
+  --api-port 6550 \
+  --servers 1 --agents 0 \
+  --k3s-server-arg "--no-deploy=traefik" \
+  --network k3d-observability-net
+
+# dc1 (data centre 1)
+k3d cluster create dc1 \
+  --servers 1 --agents 2 \
+  --k3s-server-arg "--no-deploy=traefik" \
+  --network k3d-observability-net
+
+# dc2 (data centre 2)
+k3d cluster create dc2 \
+  --servers 1 --agents 2 \
+  --k3s-server-arg "--no-deploy=traefik" \
+  --network k3d-observability-net
